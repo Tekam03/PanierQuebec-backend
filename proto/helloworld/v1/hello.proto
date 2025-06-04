@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package helloworld.v1;
 
-option go_package = "github.com/tekam03/panierquebec/gen/helloworld/v1;helloworldv1";
+option go_package = "github.com/tekam03/panierquebec-backend/gen/helloworld/v1;helloworldv1";
 
 service HelloService {
   rpc Hello(HelloRequest) returns (HelloResponse);

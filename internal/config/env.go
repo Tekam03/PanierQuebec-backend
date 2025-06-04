@@ -20,5 +20,4 @@ func LoadEnv() {
 	} else {
 		fmt.Printf("✅ Skipping .env load for environment: %s", env)
 	}
-    fmt.Println("✅ Environment variables loaded successfully")
 }

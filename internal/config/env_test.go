@@ -72,8 +72,8 @@ func TestLoadEnv(t *testing.T) {
 			os.Setenv("ENV", tt.envValue)
 
 			if tt.loadDotEnv {
-				writeEnvFile(".env")
-				defer removeEnvFile(".env")
+				writeEnvFile(t, ".env")
+				defer removeEnvFile(t, ".env")
 			} else {
 				os.Remove(".env") // ensure it's not there
 			}
@@ -95,8 +95,8 @@ func TestLoadEnvWithoutSpecifyingEnv(t *testing.T) {
 	os.Unsetenv("BAZ")
 
 	// Write a dummy .env file
-	writeEnvFile(".env")
-	defer removeEnvFile(".env")
+	writeEnvFile(t, ".env")
+	defer removeEnvFile(t, ".env")
 
 	// Load the environment variables
 	LoadEnv()

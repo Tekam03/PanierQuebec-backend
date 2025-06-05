@@ -11,12 +11,18 @@ FOO=bar
 BAZ=qux
 `
 
-func writeEnvFile(name string) {
-	os.WriteFile(name, []byte(dummyEnv), 0644)
+func writeEnvFile(t *testing.T, name string) {
+	t.Helper()
+	if err := os.WriteFile(name, []byte(dummyEnv), 0644); err != nil {
+		t.Fatalf("failed to write .env file: %v", err)
+	}
 }
 
-func removeEnvFile(name string) {
-	os.Remove(name)
+func removeEnvFile(t *testing.T, name string) {
+	t.Helper()
+	if err := os.Remove(name); err != nil {
+		t.Fatalf("failed to remove .env file: %v", err)
+	}
 }
 
 func TestLoadEnv(t *testing.T) {

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package helloworld.v1;
+
+option go_package = "github.com/tekam03/panierquebec-backend/gen/stores/v1;storesv1";
+
+service HelloService {
+  rpc Hello(HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloResponse {
+  string message = 1;
+}

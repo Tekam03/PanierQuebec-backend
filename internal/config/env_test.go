@@ -83,8 +83,10 @@ func TestLoadEnv(t *testing.T) {
 }
 
 func TestLoadEnvWithoutSpecifyingEnv(t *testing.T) {
-	// Ensure ENV is not set
+	// Ensure ENV, FOO, and BAZ are not set
 	os.Unsetenv("ENV")
+	os.Unsetenv("FOO")
+	os.Unsetenv("BAZ")
 
 	// Write a dummy .env file
 	writeEnvFile(".env")

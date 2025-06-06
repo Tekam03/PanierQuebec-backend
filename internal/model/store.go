@@ -1,7 +1,7 @@
 package model
 
 type StoreMerchant struct {
-    ID   int
+    ID   int32
     Name string
     Url string
 }

@@ -1,4 +1,4 @@
-package repo
+package merchant
 
 import (
 	"context"
@@ -10,16 +10,16 @@ import (
 	"github.com/tekam03/panierquebec-backend/internal/model"
 )
 
-type merchantRepo struct {
+type postgresMerchantRepo struct {
     db *pgxpool.Pool
 }
 
-func NewMerchantRepo() MerchantRepo {
-    return &merchantRepo{
+func NewPostgresMerchantRepo() MerchantRepo {
+    return &postgresMerchantRepo{
         db: db.Pool, // reuse the pool from your db package
     }
 }
-func (r *merchantRepo) GetMerchant(ctx context.Context, id int) (*model.StoreMerchant, error) {
+func (r *postgresMerchantRepo) GetMerchant(ctx context.Context, id int) (*model.StoreMerchant, error) {
 	query := `SELECT id, name, url FROM store_merchants WHERE id = $1`
 	row := r.db.QueryRow(ctx, query, id)
 
@@ -34,7 +34,7 @@ func (r *merchantRepo) GetMerchant(ctx context.Context, id int) (*model.StoreMer
 	return m, nil
 }
 
-func (r *merchantRepo) GetAllMerchants(ctx context.Context) ([]*model.StoreMerchant, error) {
+func (r *postgresMerchantRepo) GetAllMerchants(ctx context.Context) ([]*model.StoreMerchant, error) {
 	query := `SELECT id, name, url FROM store_merchants ORDER BY id ASC`
 	rows, err := r.db.Query(ctx, query)
 	if err != nil {
@@ -56,4 +56,27 @@ func (r *merchantRepo) GetAllMerchants(ctx context.Context) ([]*model.StoreMerch
     }
 
     return merchants, nil
+}
+
+func (r *postgresMerchantRepo) CreateMerchant(ctx context.Context, merchant *model.StoreMerchant) error {
+	query := `INSERT INTO store_merchants (name, url) VALUES ($1, $2) RETURNING id`
+	row := r.db.QueryRow(ctx, query, merchant.Name, merchant.Url)
+
+
+	if err := row.Scan(&merchant.ID); err != nil {
+		if err == pgx.ErrNoRows {
+			return fmt.Errorf("failed to create merchant: %w", err)
+		}
+		return fmt.Errorf("failed to scan new merchant ID: %w", err)
+	}
+
+	return nil
+}
+
+func (r *postgresMerchantRepo) UpdateMerchant(ctx context.Context, id int, merchant *model.StoreMerchant) (error) {
+	return nil
+}
+
+func (r *postgresMerchantRepo) DeleteMerchant(ctx context.Context, id int) (error) {
+	return nil
 }

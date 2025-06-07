@@ -65,3 +65,38 @@ func (h *MerchantHandler) GetAllMerchants(
 		Merchants: protoMerchants,
 	}), nil
 }
+
+func (h *MerchantHandler) GetMerchantByID(
+	ctx context.Context,
+	req *connect.Request[storesv1.GetMerchantByIDRequest],
+) (*connect.Response[storesv1.GetMerchantByIDResponse], error) {
+	// Call service to get merchant by ID
+	m, err := h.service.GetByID(ctx, int(req.Msg.Id))
+	if err != nil {
+		return nil, err
+	}
+
+	// Map model to proto response
+	protoMerchant := &storesv1.StoreMerchant{
+		Id:   m.ID,
+		Name: m.Name,
+		Url:  m.Url,
+	}
+
+	return connect.NewResponse(&storesv1.GetMerchantByIDResponse{
+		Merchant: protoMerchant,
+	}), nil
+}
+
+func (h *MerchantHandler) DeleteMerchant(
+	ctx context.Context,
+	req *connect.Request[storesv1.DeleteMerchantRequest],
+) (*connect.Response[storesv1.DeleteMerchantResponse], error) {
+	// Call service to delete merchant by ID
+	err := h.service.Delete(ctx, int(req.Msg.Id))
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&storesv1.DeleteMerchantResponse{}), nil
+}

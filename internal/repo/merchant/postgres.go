@@ -77,6 +77,17 @@ func (r *postgresMerchantRepo) UpdateMerchant(ctx context.Context, id int, merch
 	return nil
 }
 
-func (r *postgresMerchantRepo) DeleteMerchant(ctx context.Context, id int) (error) {
+func (r *postgresMerchantRepo) DeleteMerchant(ctx context.Context, id int) error {
+	query := `DELETE FROM store_merchants WHERE id = $1`
+	result, err := r.db.Exec(ctx, query, id)
+	if err != nil {
+		return fmt.Errorf("failed to delete merchant: %w", err)
+	}
+
+	rowsAffected := result.RowsAffected()
+	if rowsAffected == 0 {
+		return fmt.Errorf("merchant with id %d not found", id)
+	}
+
 	return nil
 }

@@ -21,6 +21,11 @@ message StoreMerchant {
   string url = 3;
 }
 
+message StoreMerchantUpdateableInfo {
+  optional string name = 1;
+  optional string url = 2;
+}
+
 message GetAllMerchantsRequest {}
 
 message GetAllMerchantsResponse {
@@ -54,5 +59,9 @@ message DeleteMerchantResponse {
 
 message UpdateMerchantRequest {
   int32 id = 1;
-  StoreMerchant merchant = 2;
+  StoreMerchantUpdateableInfo merchant = 2;
+}
+
+message UpdateMerchantResponse {
+  StoreMerchant merchant = 1;
 }

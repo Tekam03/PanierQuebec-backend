@@ -73,17 +73,20 @@ func (r *postgresMerchantRepo) CreateMerchant(ctx context.Context, merchant *mod
 	return nil
 }
 
-func (r *postgresMerchantRepo) UpdateMerchant(ctx context.Context, id int, merchant *model.StoreMerchant) (error) {
+func (r *postgresMerchantRepo) UpdateMerchant(ctx context.Context, id int, merchant *model.UpdateStoreMerchant) (*model.StoreMerchant, error) {
 	query := `UPDATE store_merchants SET name = $1, url = $2 WHERE id = $3`
 	_, err := r.db.Exec(ctx, query, merchant.Name, merchant.Url, id)
 	if err != nil {
 		if err == pgx.ErrNoRows {
-			return fmt.Errorf("merchant with id %d not found", id)
+			return nil, fmt.Errorf("merchant with id %d not found", id)
 		}
-		return fmt.Errorf("failed to update merchant: %w", err)
+		return nil, fmt.Errorf("failed to update merchant: %w", err)
 	}
-
-	return nil
+	m, err := r.GetMerchant(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve updated merchant: %w", err)
+	}
+	return m, nil
 }
 
 func (r *postgresMerchantRepo) DeleteMerchant(ctx context.Context, id int) error {

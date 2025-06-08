@@ -7,11 +7,11 @@ import (
 	"github.com/tekam03/panierquebec-backend/internal/service/merchant"
 
 	storesv1 "github.com/tekam03/panierquebec-backend/gen/stores/v1"
-	"github.com/tekam03/panierquebec-backend/gen/stores/v1/storesv1connect"
+	// "github.com/tekam03/panierquebec-backend/gen/stores/v1/storesv1connect"
 )
 
 type MerchantHandler struct {
-	storesv1connect.UnimplementedMerchantServiceHandler
+	// storesv1connect.UnimplementedMerchantServiceHandler
 	service merchant.Service
 }
 
@@ -99,4 +99,28 @@ func (h *MerchantHandler) DeleteMerchant(
 	}
 
 	return connect.NewResponse(&storesv1.DeleteMerchantResponse{}), nil
+}
+
+func (h *MerchantHandler) UpdateMerchant(
+	ctx context.Context,
+	req *connect.Request[storesv1.UpdateMerchantRequest],
+) (*connect.Response[storesv1.UpdateMerchantResponse], error) {
+	// Map proto to model
+	u := &model.UpdateStoreMerchant{
+		Name: req.Msg.Merchant.Name,
+		Url:  req.Msg.Merchant.Url,
+	}
+	// Call service to update merchant
+	m, err := h.service.Update(ctx, int(req.Msg.Id), u)
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&storesv1.UpdateMerchantResponse{
+		Merchant: &storesv1.StoreMerchant{
+			Id:   m.ID,
+			Name: m.Name,
+			Url:  m.Url,
+		},
+	}), nil
 }

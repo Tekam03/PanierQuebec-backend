@@ -26,7 +26,7 @@ func (s *service) Create(ctx context.Context, m *model.StoreMerchant) error {
     return s.repo.CreateMerchant(ctx, m)
 }
 
-func (s *service) Update(ctx context.Context, id int, m *model.StoreMerchant) error {
+func (s *service) Update(ctx context.Context, id int, m *model.UpdateStoreMerchant) (*model.StoreMerchant, error) {
     return s.repo.UpdateMerchant(ctx, id, m)
 }
 

@@ -10,6 +10,7 @@ service MerchantService {
   rpc GetMerchantByID (GetMerchantByIDRequest) returns (GetMerchantByIDResponse);
   rpc CreateMerchant (CreateMerchantRequest) returns (CreateMerchantResponse);
   rpc DeleteMerchant (DeleteMerchantRequest) returns (DeleteMerchantResponse);
+  rpc UpdateMerchant (UpdateMerchantRequest) returns (UpdateMerchantResponse);
 }
 
 // Messages
@@ -49,4 +50,9 @@ message DeleteMerchantRequest {
 
 message DeleteMerchantResponse {
   bool success = 1;
+}
+
+message UpdateMerchantRequest {
+  int32 id = 1;
+  StoreMerchant merchant = 2;
 }

@@ -8,6 +8,7 @@ on:
     branches:
       - main
 
+
 jobs:
   build-test-migrate:
     runs-on: ubuntu-latest
@@ -19,6 +20,22 @@ jobs:
       DB_HOST: localhost
       DB_PORT: 5432
       DB_NAME: panierquebec
+
+      
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: env.DB_USER
+          POSTGRES_PASSWORD: env.DB_PASSWORD
+          POSTGRES_DB: env.DB_NAME
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code

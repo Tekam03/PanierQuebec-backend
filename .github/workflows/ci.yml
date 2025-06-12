@@ -38,13 +38,13 @@ jobs:
     #       --health-retries 5
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: "1.24"
-
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       # - name: Install golang-migrate CLI
       #   run: |
@@ -85,8 +85,8 @@ jobs:
       - name: Run Buf generate
         run: buf generate
 
-      - name: Go mod tidy
-        run: go mod tidy
+      - name: Go mod download
+        run: go mod download
 
       - name: Lint
         run: go vet ./...

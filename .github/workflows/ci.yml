@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-test-migrate:
+    runs-on: ubuntu-latest
+
+    # To swich for github secrets
+    env:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: panierquebec
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.24"
+
+      - name: Install golang-migrate CLI
+        run: |
+          go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
+      - name: Run migrations
+        run: |
+          migrate -path migrations -database "postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}?sslmode=disable" up
+
+      - name: Install sqlc
+        run: |
+          go install github.com/kyleconroy/sqlc/cmd/sqlc@latest
+          sqlc version
+
+      - name: Sqlc generate
+        run: sqlc generate
+
+      - name: Lint
+        run: go vet ./...
+      
+      - name: Go mod tidy
+        run: go mod tidy
+
+      - name: Run tests
+        run: go test -v ./...
+
+      - name: Build 
+        run: go build -v -o build/panierquebec_backend_linux_amd64 ./cmd/panierquebec_backend
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: ./build

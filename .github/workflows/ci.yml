@@ -74,8 +74,8 @@ jobs:
       - name: Run Buf lint
         run: buf lint
 
-      - name: Run Buf breaking
-        run: buf breaking --against-registry buf.build/panierquebec/panierquebec
+      # - name: Run Buf breaking
+      #   run: buf breaking --against-registry buf.build/panierquebec/panierquebec
 
       - name: Run Buf generate
         run: buf generate

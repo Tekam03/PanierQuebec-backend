@@ -74,6 +74,9 @@ jobs:
       - name: Run Buf lint
         run: buf lint
 
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+
       # - name: Run Buf breaking
       #   run: buf breaking --against-registry buf.build/panierquebec/panierquebec
 

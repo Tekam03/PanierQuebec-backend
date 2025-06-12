@@ -74,14 +74,7 @@ jobs:
       - name: Run Buf lint
         run: buf lint
 
-      - name: Cache Go tool binaries
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.GOPATH }}/bin
-          key: go-tools-${{ runner.os }}-${{ hashFiles('**/go.sum') }}
-
       - name: Install Tools
-        if: ${{ steps.cache-go-tools.outputs.cache-hit != 'true' }}
         run: |
           go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
           go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest

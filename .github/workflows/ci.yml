@@ -14,28 +14,28 @@ jobs:
     runs-on: ubuntu-latest
 
     # To swich for github secrets
-    env:
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: localhost
-      DB_PORT: 5432
-      DB_NAME: panierquebec
+    # env:
+    #   DB_USER: postgres
+    #   DB_PASSWORD: postgres
+    #   DB_HOST: localhost
+    #   DB_PORT: 5432
+    #   DB_NAME: panierquebec
 
       
-    services:
-      postgres:
-        image: postgres:15
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: panierquebec
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres:
+    #     image: postgres:15
+    #     ports:
+    #       - 5432:5432
+    #     env:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #       POSTGRES_DB: panierquebec
+    #     options: >-
+    #       --health-cmd "pg_isready -U postgres"
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     steps:
       - name: Checkout code
@@ -46,27 +46,29 @@ jobs:
         with:
           go-version: "1.24"
 
-      - name: Install golang-migrate CLI
-        run: |
-          go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+      # - name: Install golang-migrate CLI
+      #   run: |
+      #     go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
-      - name: Run migrations
-        run: |
-          migrate -path migrations -database "postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}?sslmode=disable" up
-
-      - name: Install sqlc
-        run: |
-          go install github.com/kyleconroy/sqlc/cmd/sqlc@latest
-          sqlc version
-
-      - name: Sqlc generate
-        run: sqlc generate
+      # - name: Run migrations
+      #   run: |
+      #     migrate -path migrations -database "postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}?sslmode=disable" up
 
       - name: Lint
         run: go vet ./...
       
       - name: Go mod tidy
         run: go mod tidy
+
+      - uses: sqlc-dev/setup-sqlc@v3
+        with:
+          sqlc-version: '1.29.0'
+
+      - name: Sqlc diff
+        run: sqlc diff
+
+      - name: Sqlc generate
+        run: sqlc generate
 
       - name: Run tests
         run: go test -v ./...

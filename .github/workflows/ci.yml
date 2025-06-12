@@ -53,9 +53,6 @@ jobs:
       # - name: Run migrations
       #   run: |
       #     migrate -path migrations -database "postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}?sslmode=disable" up
-      
-      - name: Go mod tidy
-        run: go mod tidy
 
       - uses: sqlc-dev/setup-sqlc@v3
         with:
@@ -66,6 +63,9 @@ jobs:
 
       - name: Sqlc generate
         run: sqlc generate
+
+      - name: Go mod tidy
+        run: go mod tidy
 
       - name: Lint
         run: go vet ./...

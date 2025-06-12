@@ -95,10 +95,20 @@ jobs:
         run: go test -v ./...
 
       - name: Build 
+        env:
+          GOOS: linux
+          GOARCH: amd64
         run: go build -v -o build/panierquebec_backend_linux_amd64 ./cmd/server/main.go
-      
+
+      - name: Build for Macos ARM
+        env:
+          GOOS: darwin
+          GOARCH: arm64
+        run: go build -v -o build/panierquebec_backend_darwin_arm64 ./cmd/server/main.go
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: panierquebec_backend_linux_amd64
-          path: ./build/panierquebec_backend_linux_amd64
+          name: panierquebec_backend
+          path: ./build
+          

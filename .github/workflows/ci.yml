@@ -75,7 +75,8 @@ jobs:
         run: buf lint
 
       - name: Install Protoc
-        uses: arduino/setup-protoc@v3
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
       # - name: Run Buf breaking
       #   run: buf breaking --against-registry buf.build/panierquebec/panierquebec

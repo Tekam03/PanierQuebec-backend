@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-test-migrate:
-    runs-on: self-hosted linux x64
+    runs-on: self-hosted
 
     # To swich for github secrets
     # env:

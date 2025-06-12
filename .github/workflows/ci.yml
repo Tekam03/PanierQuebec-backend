@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-test-migrate:
+  build:
     runs-on: self-hosted
 
     # To swich for github secrets

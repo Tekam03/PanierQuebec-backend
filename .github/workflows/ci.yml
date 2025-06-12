@@ -68,12 +68,14 @@ jobs:
 
       - name: Install Buf
         uses: bufbuild/buf-setup-action@v1
+        with:
+          buf_api_token: ${{ secrets.BUF_REGISTRY_TOKEN }}
       
       - name: Run Buf lint
         run: buf lint
 
       - name: Run Buf breaking
-        run: buf breaking --against=origin/main
+        run: buf breaking --against-registry buf.build/panierquebec/panierquebec
 
       - name: Run Buf generate
         run: buf generate

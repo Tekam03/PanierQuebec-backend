@@ -1,0 +1,6 @@
+ALTER TABLE stores DROP CONSTRAINT fk_stores_merchant_id;
+ALTER TABLE specific_products DROP CONSTRAINT fk_specific_products_generic_products_id;
+ALTER TABLE store_products DROP CONSTRAINT fk_store_products_store_id;
+ALTER TABLE store_products DROP CONSTRAINT fk_store_products_specific_products_id;
+ALTER TABLE specific_products DROP CONSTRAINT fk_specific_products_brand_id;
+ALTER TABLE price_histories DROP CONSTRAINT fk_price_histories_store_products_id;

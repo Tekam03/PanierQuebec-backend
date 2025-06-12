@@ -8,14 +8,16 @@ import (
 
 	"connectrpc.com/grpcreflect"
 	"github.com/tekam03/panierquebec-backend/gen/stores/v1/storesv1connect"
+	dbgen "github.com/tekam03/panierquebec-backend/internal/db/gen"
 	handlerMerchant "github.com/tekam03/panierquebec-backend/internal/handler/merchant"
 	serviceMerchant "github.com/tekam03/panierquebec-backend/internal/service/merchant"
-	repoMerchant "github.com/tekam03/panierquebec-backend/internal/repo/merchant"
+	// repoMerchant "github.com/tekam03/panierquebec-backend/internal/repo/merchant"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
 	"github.com/tekam03/panierquebec-backend/internal/config"
 	"github.com/tekam03/panierquebec-backend/internal/db"
+	"github.com/tekam03/panierquebec-backend/internal/migrate"
 )
 
 func main() {
@@ -27,11 +29,18 @@ func main() {
 	}
 	defer db.Close()
 
-	// test the merchant repository
-	merchantRepo := repoMerchant.NewPostgresMerchantRepo()
-	merchantService := serviceMerchant.NewService(merchantRepo)
-	merchantHandler := handlerMerchant.NewMerchantHandler(merchantService)
+	// Run database migrations
+	if err := migrate.RunMigrations("migrations"); err != nil {
+		log.Fatalf("Could not run migrations: %v", err)
+	}
 
+	// test the merchant repository
+	// merchantRepo := repoMerchant.NewPostgresMerchantRepo()
+
+	sqlcQueries := dbgen.New(db.Pool)
+
+	merchantService := serviceMerchant.NewService(sqlcQueries)
+	merchantHandler := handlerMerchant.NewMerchantHandler(merchantService)
 
 	mux := http.NewServeMux()
 	path, handler := storesv1connect.NewMerchantServiceHandler(merchantHandler)

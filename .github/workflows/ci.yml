@@ -28,9 +28,9 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: env.DB_USER
-          POSTGRES_PASSWORD: env.DB_PASSWORD
-          POSTGRES_DB: env.DB_NAME
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: panierquebec
         options: >-
           --health-cmd "pg_isready -U postgres"
           --health-interval 10s

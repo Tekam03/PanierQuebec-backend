@@ -74,6 +74,12 @@ jobs:
       - name: Run Buf lint
         run: buf lint
 
+      - name: Cache Go tool binaries
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.GOPATH }}/bin
+          key: go-tools-${{ runner.os }}-${{ hashFiles('**/go.sum') }}
+
       - name: Install Tools
         run: |
           go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
@@ -100,5 +106,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifact
-          path: ./build
+          name: panierquebec_backend_linux_amd64
+          path: ./build/panierquebec_backend_linux_amd64

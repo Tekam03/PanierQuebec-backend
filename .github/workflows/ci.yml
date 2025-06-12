@@ -53,9 +53,6 @@ jobs:
       # - name: Run migrations
       #   run: |
       #     migrate -path migrations -database "postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}?sslmode=disable" up
-
-      - name: Lint
-        run: go vet ./...
       
       - name: Go mod tidy
         run: go mod tidy
@@ -69,6 +66,9 @@ jobs:
 
       - name: Sqlc generate
         run: sqlc generate
+
+      - name: Lint
+        run: go vet ./...
 
       - name: Run tests
         run: go test -v ./...

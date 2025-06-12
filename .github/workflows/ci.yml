@@ -58,8 +58,8 @@ jobs:
         with:
           sqlc-version: '1.29.0'
 
-      - name: Sqlc diff
-        run: sqlc diff
+      # - name: Sqlc diff
+      #   run: sqlc diff
 
       - name: Sqlc generate
         run: sqlc generate

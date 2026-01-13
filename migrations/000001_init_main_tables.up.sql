@@ -39,7 +39,7 @@ CREATE TABLE external_products (
   name text,
   description text,
   brand text,
-  matched_specific_product_id int,
+  matched_store_product_id int,
   scraped_at timestamptz DEFAULT now(),
   UNIQUE (external_id)
 );

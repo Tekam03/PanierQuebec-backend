@@ -6,12 +6,12 @@ import (
 	"github.com/tekam03/panierquebec-backend/internal/model"
 	"github.com/tekam03/panierquebec-backend/internal/service/merchant"
 
-	storesv1 "github.com/tekam03/panierquebec-backend/gen/stores/v1"
-	// "github.com/tekam03/panierquebec-backend/gen/stores/v1/storesv1connect"
+	productsv1 "github.com/tekam03/panierquebec-backend/gen/products/v1"
+	// "github.com/tekam03/panierquebec-backend/gen/stores/v1/productsv1connect"
 )
 
 type MerchantHandler struct {
-	// storesv1connect.UnimplementedMerchantServiceHandler
+	// productsv1connect.UnimplementedMerchantServiceHandler
 	service merchant.Service
 }
 
@@ -21,8 +21,8 @@ func NewMerchantHandler(s merchant.Service) *MerchantHandler {
 
 func (h *MerchantHandler) CreateMerchant(
 	ctx context.Context,
-	req *connect.Request[storesv1.CreateMerchantRequest],
-) (*connect.Response[storesv1.CreateMerchantResponse], error) {
+	req *connect.Request[productsv1.CreateMerchantRequest],
+) (*connect.Response[productsv1.CreateMerchantResponse], error) {
 	// Map proto to model
 	m := &model.StoreMerchant{
 		Name: req.Msg.Name,
@@ -36,15 +36,15 @@ func (h *MerchantHandler) CreateMerchant(
 	}
 
 	// Respond with new ID
-	return connect.NewResponse(&storesv1.CreateMerchantResponse{
+	return connect.NewResponse(&productsv1.CreateMerchantResponse{
 		Id: m.ID,
 	}), nil
 }
 
 func (h *MerchantHandler) GetAllMerchants(
 	ctx context.Context,
-	req *connect.Request[storesv1.GetAllMerchantsRequest],
-) (*connect.Response[storesv1.GetAllMerchantsResponse], error) {
+	req *connect.Request[productsv1.GetAllMerchantsRequest],
+) (*connect.Response[productsv1.GetAllMerchantsResponse], error) {
 	// Call service to get all merchants
 	merchants, err := h.service.GetAll(ctx)
 	if err != nil {
@@ -52,24 +52,24 @@ func (h *MerchantHandler) GetAllMerchants(
 	}
 
 	// Map model to proto response
-	var protoMerchants []*storesv1.StoreMerchant
+	var protoMerchants []*productsv1.StoreMerchant
 	for _, m := range merchants {
-		protoMerchants = append(protoMerchants, &storesv1.StoreMerchant{
+		protoMerchants = append(protoMerchants, &productsv1.StoreMerchant{
 			Id:   m.ID,
 			Name: m.Name,
 			Url:  m.Url,
 		})
 	}
 
-	return connect.NewResponse(&storesv1.GetAllMerchantsResponse{
+	return connect.NewResponse(&productsv1.GetAllMerchantsResponse{
 		Merchants: protoMerchants,
 	}), nil
 }
 
 func (h *MerchantHandler) GetMerchantByID(
 	ctx context.Context,
-	req *connect.Request[storesv1.GetMerchantByIDRequest],
-) (*connect.Response[storesv1.GetMerchantByIDResponse], error) {
+	req *connect.Request[productsv1.GetMerchantByIDRequest],
+) (*connect.Response[productsv1.GetMerchantByIDResponse], error) {
 	// Call service to get merchant by ID
 	m, err := h.service.GetByID(ctx, int(req.Msg.Id))
 	if err != nil {
@@ -77,34 +77,34 @@ func (h *MerchantHandler) GetMerchantByID(
 	}
 
 	// Map model to proto response
-	protoMerchant := &storesv1.StoreMerchant{
+	protoMerchant := &productsv1.StoreMerchant{
 		Id:   m.ID,
 		Name: m.Name,
 		Url:  m.Url,
 	}
 
-	return connect.NewResponse(&storesv1.GetMerchantByIDResponse{
+	return connect.NewResponse(&productsv1.GetMerchantByIDResponse{
 		Merchant: protoMerchant,
 	}), nil
 }
 
 func (h *MerchantHandler) DeleteMerchant(
 	ctx context.Context,
-	req *connect.Request[storesv1.DeleteMerchantRequest],
-) (*connect.Response[storesv1.DeleteMerchantResponse], error) {
+	req *connect.Request[productsv1.DeleteMerchantRequest],
+) (*connect.Response[productsv1.DeleteMerchantResponse], error) {
 	// Call service to delete merchant by ID
 	err := h.service.Delete(ctx, int(req.Msg.Id))
 	if err != nil {
 		return nil, err
 	}
 
-	return connect.NewResponse(&storesv1.DeleteMerchantResponse{}), nil
+	return connect.NewResponse(&productsv1.DeleteMerchantResponse{}), nil
 }
 
 func (h *MerchantHandler) UpdateMerchant(
 	ctx context.Context,
-	req *connect.Request[storesv1.UpdateMerchantRequest],
-) (*connect.Response[storesv1.UpdateMerchantResponse], error) {
+	req *connect.Request[productsv1.UpdateMerchantRequest],
+) (*connect.Response[productsv1.UpdateMerchantResponse], error) {
 	// Map proto to model
 	u := &model.UpdateStoreMerchant{
 		Name: req.Msg.Merchant.Name,
@@ -116,8 +116,8 @@ func (h *MerchantHandler) UpdateMerchant(
 		return nil, err
 	}
 
-	return connect.NewResponse(&storesv1.UpdateMerchantResponse{
-		Merchant: &storesv1.StoreMerchant{
+	return connect.NewResponse(&productsv1.UpdateMerchantResponse{
+		Merchant: &productsv1.StoreMerchant{
 			Id:   m.ID,
 			Name: m.Name,
 			Url:  m.Url,

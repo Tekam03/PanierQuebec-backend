@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"connectrpc.com/grpcreflect"
-	"github.com/tekam03/panierquebec-backend/gen/stores/v1/storesv1connect"
+	"github.com/tekam03/panierquebec-backend/gen/products/v1/productsv1connect"
 	dbgen "github.com/tekam03/panierquebec-backend/internal/db/gen"
 	handlerMerchant "github.com/tekam03/panierquebec-backend/internal/handler/merchant"
 	serviceMerchant "github.com/tekam03/panierquebec-backend/internal/service/merchant"
@@ -43,10 +43,10 @@ func main() {
 	merchantHandler := handlerMerchant.NewMerchantHandler(merchantService)
 
 	mux := http.NewServeMux()
-	path, handler := storesv1connect.NewMerchantServiceHandler(merchantHandler)
+	path, handler := productsv1connect.NewMerchantServiceHandler(merchantHandler)
 	mux.Handle(path, handler)
 	reflector := grpcreflect.NewStaticReflector(
-		storesv1connect.MerchantServiceName,
+		productsv1connect.MerchantServiceName,
 	)
 	// Many tools still expect the older version of the server reflection API, so
 	// most servers should mount both handlers.

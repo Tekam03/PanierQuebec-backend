@@ -9,8 +9,11 @@ import (
 	"connectrpc.com/grpcreflect"
 	"github.com/tekam03/panierquebec-backend/gen/products/v1/productsv1connect"
 	dbgen "github.com/tekam03/panierquebec-backend/internal/db/gen"
+	handlerExternalProduct "github.com/tekam03/panierquebec-backend/internal/handler/external_product"
 	handlerMerchant "github.com/tekam03/panierquebec-backend/internal/handler/merchant"
+	serviceExternalProduct "github.com/tekam03/panierquebec-backend/internal/service/external_product"
 	serviceMerchant "github.com/tekam03/panierquebec-backend/internal/service/merchant"
+
 	// repoMerchant "github.com/tekam03/panierquebec-backend/internal/repo/merchant"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -40,13 +43,18 @@ func main() {
 	sqlcQueries := dbgen.New(db.Pool)
 
 	merchantService := serviceMerchant.NewService(sqlcQueries)
+	externalProductService := serviceExternalProduct.NewService(sqlcQueries)
 	merchantHandler := handlerMerchant.NewMerchantHandler(merchantService)
+	externalProductHandler := handlerExternalProduct.NewExternalProductHandler(externalProductService)
 
 	mux := http.NewServeMux()
 	path, handler := productsv1connect.NewMerchantServiceHandler(merchantHandler)
 	mux.Handle(path, handler)
+	path, handler = productsv1connect.NewExternalProductServiceHandler(externalProductHandler)
+	mux.Handle(path, handler)
 	reflector := grpcreflect.NewStaticReflector(
 		productsv1connect.MerchantServiceName,
+		productsv1connect.ExternalProductServiceName,
 	)
 	// Many tools still expect the older version of the server reflection API, so
 	// most servers should mount both handlers.

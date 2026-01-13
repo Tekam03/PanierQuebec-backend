@@ -2,6 +2,7 @@ package merchant
 
 import (
 	"context"
+
 	"connectrpc.com/connect"
 	"github.com/tekam03/panierquebec-backend/internal/model"
 	"github.com/tekam03/panierquebec-backend/internal/service/merchant"

@@ -6,10 +6,15 @@ option go_package = "github.com/tekam03/panierquebec-backend/gen/products/v1;pro
 
 // Service definition
 service MerchantService {
+  // GetAllMerchants retrieves all merchants
   rpc GetAllMerchants (GetAllMerchantsRequest) returns (GetAllMerchantsResponse);
+  // GetMerchantByID retrieves a merchant by ID
   rpc GetMerchantByID (GetMerchantByIDRequest) returns (GetMerchantByIDResponse);
+  // CreateMerchant creates a new merchant
   rpc CreateMerchant (CreateMerchantRequest) returns (CreateMerchantResponse);
+  // DeleteMerchant deletes a merchant by ID
   rpc DeleteMerchant (DeleteMerchantRequest) returns (DeleteMerchantResponse);
+  // UpdateMerchant updates an existing merchant
   rpc UpdateMerchant (UpdateMerchantRequest) returns (UpdateMerchantResponse);
 }
 
@@ -40,6 +45,7 @@ message GetMerchantByIDResponse {
   StoreMerchant merchant = 1;
 }
 
+// CreateMerchantRequest contains the information needed to create a new merchant
 message CreateMerchantRequest {
   string name = 1;
   string url = 2;

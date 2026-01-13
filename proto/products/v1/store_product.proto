@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package products.v1;
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/tekam03/panierquebec-backend/gen/products/v1;productsv1";
+
+// Service definition
+// service ExternalProductService {
+//   rpc GetAllExternalProducts (GetAllExternalProductsRequest) returns (GetAllExternalProductsResponse);
+//   rpc GetMerchantByID (GetMerchantByIDRequest) returns (GetMerchantByIDResponse);
+//   rpc CreateMerchant (CreateMerchantRequest) returns (CreateMerchantResponse);
+//   rpc DeleteMerchant (DeleteMerchantRequest) returns (DeleteMerchantResponse);
+//   rpc UpdateMerchant (UpdateMerchantRequest) returns (UpdateMerchantResponse);
+// }
+
+// Messages
+
+message StoreProduct {
+  int32 id = 1;
+  int32 store_id = 2;
+  int32 specific_products_id = 3;
+  optional string price = 4;
+  google.protobuf.Timestamp last_updated = 5;
+  
+}

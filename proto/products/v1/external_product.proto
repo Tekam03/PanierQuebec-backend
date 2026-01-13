@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package products.v1;
+import "google/protobuf/timestamp.proto";
+import "products/v1/store_product.proto";
+
+
+option go_package = "github.com/tekam03/panierquebec-backend/gen/products/v1;productsv1";
+
+// Service definition
+service ExternalProductService {
+  // Retrieves all external products.
+  rpc GetAllExternalProducts (GetAllExternalProductsRequest) returns (GetAllExternalProductsResponse);
+  // Creates a new external product.
+  rpc CreateExternalProduct (CreateExternalProductRequest) returns (CreateExternalProductResponse);
+  // Deletes an external product by ID.
+  rpc DeleteExternalProduct (DeleteExternalProductRequest) returns (DeleteExternalProductResponse);
+}
+
+// Messages
+
+message ExternalProduct {
+  int32 id = 1;
+  string source = 2;
+  string external_id = 3;
+  optional string name = 4;
+  optional string description = 5;
+  optional string brand = 6;
+  google.protobuf.Timestamp scraped_at = 7;
+  optional StoreProduct store_product = 8;
+}
+
+message GetAllExternalProductsRequest {}
+
+message GetAllExternalProductsResponse {
+  repeated ExternalProduct external_products = 1;
+}
+
+message CreateExternalProductRequest {
+  string source = 1;
+  string external_id = 2;
+  optional string name = 3;
+  optional string description = 4;
+  optional string brand = 5;
+  optional int32 store_product_id = 6;
+}
+
+message CreateExternalProductResponse {
+  int32 id = 1;
+}
+
+message DeleteExternalProductRequest {
+  int32 id = 1;
+}
+
+message DeleteExternalProductResponse {
+  bool success = 1;
+}

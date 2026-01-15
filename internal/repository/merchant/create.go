@@ -7,7 +7,7 @@ import (
 	"github.com/tekam03/panierquebec-backend/internal/model"
 )
 
-func (r *repo) Create(ctx context.Context, m *MerchantCreate) (*model.StoreMerchant, error) {
+func (r *repo) Create(ctx context.Context, m *model.MerchantCreate) (*model.StoreMerchant, error) {
     params := dbgen.CreateStoreMerchantParams{
         Name: m.Name,
         Url:  m.Url,
@@ -25,9 +25,4 @@ func (r *repo) Create(ctx context.Context, m *MerchantCreate) (*model.StoreMerch
         Name: merchant.Name,
         Url:  url,
     }, nil
-}
-
-type MerchantCreate struct {
-	Name string
-	Url  *string
 }	

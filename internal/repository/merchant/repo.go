@@ -10,8 +10,8 @@ import (
 type Repo interface {
     GetAll(ctx context.Context) ([]*model.StoreMerchant, error)
     GetByID(ctx context.Context, id int32) (*model.StoreMerchant, error)
-	Create(ctx context.Context, m *MerchantCreate) (*model.StoreMerchant, error)
-	Patch(ctx context.Context, id int32, m *MerchantPatch) (*model.StoreMerchant, error)
+	Create(ctx context.Context, m *model.MerchantCreate) (*model.StoreMerchant, error)
+	Patch(ctx context.Context, id int32, m *model.MerchantPatch) (*model.StoreMerchant, error)
 	Delete(ctx context.Context, id int32) error
 }
 

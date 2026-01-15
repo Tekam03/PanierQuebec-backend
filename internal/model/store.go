@@ -6,8 +6,13 @@ type StoreMerchant struct {
 	Url  string
 }
 
-type StoreMerchantPatch struct {
+type MerchantPatch struct {
 	Name *string
+	Url  *string
+}
+
+type MerchantCreate struct {
+	Name string
 	Url  *string
 }
 

@@ -8,7 +8,7 @@ import (
 	"github.com/tekam03/panierquebec-backend/internal/util"
 )
 
-func (r *repo) Patch(ctx context.Context, id int32, m *MerchantPatch) (*model.StoreMerchant, error) {
+func (r *repo) Patch(ctx context.Context, id int32, m *model.MerchantPatch) (*model.StoreMerchant, error) {
     params := dbgen.PatchStoreMerchantParams{
         ID:   id,
         Name: m.Name,
@@ -25,8 +25,3 @@ func (r *repo) Patch(ctx context.Context, id int32, m *MerchantPatch) (*model.St
         Url:  util.FromPtr(updatedMerchant.Url),
     }, nil
 }
-
-type MerchantPatch struct {
-	Name *string
-	Url  *string
-}	

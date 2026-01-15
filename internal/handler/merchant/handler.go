@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"connectrpc.com/connect"
-	repoMerchant "github.com/tekam03/panierquebec-backend/internal/repository/merchant"
+	"github.com/tekam03/panierquebec-backend/internal/model"
 	"github.com/tekam03/panierquebec-backend/internal/service/merchant"
 
 	productsv1 "github.com/tekam03/panierquebec-backend/gen/products/v1"
@@ -25,7 +25,7 @@ func (h *MerchantHandler) CreateMerchant(
 	req *connect.Request[productsv1.CreateMerchantRequest],
 ) (*connect.Response[productsv1.StoreMerchant], error) {
 	// Map proto to model
-	m := &repoMerchant.MerchantCreate{
+	m := &model.MerchantCreate{
 		Name: req.Msg.Name,
 		Url:  req.Msg.Url,
 	}
@@ -111,7 +111,7 @@ func (h *MerchantHandler) UpdateMerchant(
 	req *connect.Request[productsv1.UpdateMerchantRequest],
 ) (*connect.Response[productsv1.StoreMerchant], error) {
 	// Map proto to model
-	u := &repoMerchant.MerchantPatch{
+	u := &model.MerchantPatch{
 		Name: req.Msg.Name,
 		Url:  req.Msg.Url,
 	}

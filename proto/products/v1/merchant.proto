@@ -9,13 +9,13 @@ service MerchantService {
   // GetAllMerchants retrieves all merchants
   rpc GetAllMerchants (GetAllMerchantsRequest) returns (GetAllMerchantsResponse);
   // GetMerchantByID retrieves a merchant by ID
-  rpc GetMerchantByID (GetMerchantByIDRequest) returns (GetMerchantByIDResponse);
+  rpc GetMerchantByID (GetMerchantByIDRequest) returns (StoreMerchant);
   // CreateMerchant creates a new merchant
-  rpc CreateMerchant (CreateMerchantRequest) returns (CreateMerchantResponse);
+  rpc CreateMerchant (CreateMerchantRequest) returns (StoreMerchant);
   // DeleteMerchant deletes a merchant by ID
   rpc DeleteMerchant (DeleteMerchantRequest) returns (DeleteMerchantResponse);
   // UpdateMerchant updates an existing merchant
-  rpc UpdateMerchant (UpdateMerchantRequest) returns (UpdateMerchantResponse);
+  rpc UpdateMerchant (UpdateMerchantRequest) returns (StoreMerchant);
 }
 
 // Messages
@@ -24,11 +24,6 @@ message StoreMerchant {
   int32 id = 1;
   string name = 2;
   string url = 3;
-}
-
-message StoreMerchantUpdateableInfo {
-  optional string name = 1;
-  optional string url = 2;
 }
 
 message GetAllMerchantsRequest {}
@@ -41,18 +36,10 @@ message GetMerchantByIDRequest {
   int32 id = 1;
 }
 
-message GetMerchantByIDResponse {
-  StoreMerchant merchant = 1;
-}
-
 // CreateMerchantRequest contains the information needed to create a new merchant
 message CreateMerchantRequest {
   string name = 1;
-  string url = 2;
-}
-
-message CreateMerchantResponse {
-  int32 id = 1;
+  optional string url = 2;
 }
 
 message DeleteMerchantRequest {
@@ -65,9 +52,6 @@ message DeleteMerchantResponse {
 
 message UpdateMerchantRequest {
   int32 id = 1;
-  StoreMerchantUpdateableInfo merchant = 2;
-}
-
-message UpdateMerchantResponse {
-  StoreMerchant merchant = 1;
+  optional string name = 2;
+  optional string url = 3;
 }

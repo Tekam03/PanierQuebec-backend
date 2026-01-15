@@ -13,6 +13,7 @@ import (
 	handlerMerchant "github.com/tekam03/panierquebec-backend/internal/handler/merchant"
 	serviceExternalProduct "github.com/tekam03/panierquebec-backend/internal/service/external_product"
 	serviceMerchant "github.com/tekam03/panierquebec-backend/internal/service/merchant"
+	repoMerchant "github.com/tekam03/panierquebec-backend/internal/repository/merchant"
 
 	// repoMerchant "github.com/tekam03/panierquebec-backend/internal/repo/merchant"
 	"golang.org/x/net/http2"
@@ -42,8 +43,11 @@ func main() {
 
 	sqlcQueries := dbgen.New(db.Pool)
 
-	merchantService := serviceMerchant.NewService(sqlcQueries)
+	merchantRepository := repoMerchant.NewRepo(sqlcQueries)
+	
+	merchantService := serviceMerchant.NewService(merchantRepository)
 	externalProductService := serviceExternalProduct.NewService(sqlcQueries)
+
 	merchantHandler := handlerMerchant.NewMerchantHandler(merchantService)
 	externalProductHandler := handlerExternalProduct.NewExternalProductHandler(externalProductService)
 

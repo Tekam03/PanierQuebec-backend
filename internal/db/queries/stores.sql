@@ -1,3 +1,6 @@
+-- name: GetStores :many
+SELECT * FROM stores;
+
 -- name: GetStoreByID :one
 SELECT * FROM stores WHERE id = $1;
 

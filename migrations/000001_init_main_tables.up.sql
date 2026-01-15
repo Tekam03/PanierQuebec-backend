@@ -1,6 +1,6 @@
 CREATE TABLE store_merchants (
   id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  name text,
+  name text NOT NULL,
   url text
 );
 

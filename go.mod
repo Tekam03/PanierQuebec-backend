@@ -1,12 +1,12 @@
 module github.com/tekam03/panierquebec-backend
 
-go 1.24.3
+go 1.25.0
 
 require (
 	connectrpc.com/connect v1.19.1
 	connectrpc.com/grpcreflect v1.3.0
 	github.com/golang-migrate/migrate/v4 v4.19.1
-	github.com/jackc/pgx/v5 v5.8.0
+	github.com/jackc/pgx/v5 v5.9.1
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/net v0.49.0
 	google.golang.org/protobuf v1.36.11

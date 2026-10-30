@@ -23,7 +23,7 @@ func NewMerchantHandler(s merchant.Service) *MerchantHandler {
 func (h *MerchantHandler) CreateMerchant(
 	ctx context.Context,
 	req *connect.Request[productsv1.CreateMerchantRequest],
-) (*connect.Response[productsv1.StoreMerchant], error) {
+) (*connect.Response[productsv1.CreateMerchantResponse], error) {
 	// Map proto to model
 	m := &model.MerchantCreate{
 		Name: req.Msg.Name,
@@ -37,10 +37,12 @@ func (h *MerchantHandler) CreateMerchant(
 	}
 
 	// Respond with new ID
-	return connect.NewResponse(&productsv1.StoreMerchant{
-		Id:   createdMerchant.ID,
-		Name: createdMerchant.Name,
-		Url:  createdMerchant.Url,
+	return connect.NewResponse(&productsv1.CreateMerchantResponse{
+		Merchant: &productsv1.StoreMerchant{
+			Id:   createdMerchant.ID,
+			Name: createdMerchant.Name,
+			Url:  createdMerchant.Url,
+		},
 	}), nil
 }
 
@@ -72,7 +74,7 @@ func (h *MerchantHandler) GetAllMerchants(
 func (h *MerchantHandler) GetMerchantByID(
 	ctx context.Context,
 	req *connect.Request[productsv1.GetMerchantByIDRequest],
-) (*connect.Response[productsv1.StoreMerchant], error) {
+) (*connect.Response[productsv1.GetMerchantByIDResponse], error) {
 	// Call service to get merchant by ID
 	m, err := h.service.GetByID(ctx, req.Msg.Id)
 	if err != nil {
@@ -86,10 +88,8 @@ func (h *MerchantHandler) GetMerchantByID(
 		Url:  m.Url,
 	}
 
-	return connect.NewResponse(&productsv1.StoreMerchant{
-		Id:   protoMerchant.Id,
-		Name: protoMerchant.Name,
-		Url:  protoMerchant.Url,
+	return connect.NewResponse(&productsv1.GetMerchantByIDResponse{
+		Merchant: protoMerchant,
 	}), nil
 }
 
@@ -109,7 +109,7 @@ func (h *MerchantHandler) DeleteMerchant(
 func (h *MerchantHandler) UpdateMerchant(
 	ctx context.Context,
 	req *connect.Request[productsv1.UpdateMerchantRequest],
-) (*connect.Response[productsv1.StoreMerchant], error) {
+) (*connect.Response[productsv1.UpdateMerchantResponse], error) {
 	// Map proto to model
 	u := &model.MerchantPatch{
 		Name: req.Msg.Name,
@@ -121,9 +121,11 @@ func (h *MerchantHandler) UpdateMerchant(
 		return nil, err
 	}
 
-	return connect.NewResponse(&productsv1.StoreMerchant{
-		Id:   m.ID,
-		Name: m.Name,
-		Url:  m.Url,
+	return connect.NewResponse(&productsv1.UpdateMerchantResponse{
+		Merchant: &productsv1.StoreMerchant{
+			Id:   m.ID,
+			Name: m.Name,
+			Url:  m.Url,
+		},
 	}), nil
 }
